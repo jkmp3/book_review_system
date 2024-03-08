@@ -61,7 +61,7 @@ def get_books(limit: int = 10,
 
 
 @router.get("/books/{book_id}")
-def get_book_by_id(book_id: int, db: Session = Depends(get_db_session)) -> dict[str, Any]:
+def get_book_by_id(book_id: int, db: Session = Depends(get_db_session)):
     """
     Returns the info on book with the given id
     Args:
@@ -75,4 +75,4 @@ def get_book_by_id(book_id: int, db: Session = Depends(get_db_session)) -> dict[
     if book is None:
         return BadRequestResponse(code=ErrorCodes.BOOK_DOES_NOT_EXIST.error_id,
                                   message=ErrorCodes.BOOK_DOES_NOT_EXIST.message).dict()
-    return book
+    return OkayResponse(code=ApplicationCodes.OKAY, result=book).dict()
