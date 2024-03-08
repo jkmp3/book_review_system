@@ -5,18 +5,22 @@ from typing import Optional, Type
 from sqlalchemy import and_
 from sqlalchemy.orm import Session
 
-from app.enums.error_codes import ErrorCodes
+from app.enums.codes import ErrorCodes
 from app.enums.string_comparison import StringComparison
 from app.models.models import Book
 from app.schemas.request_schemas import BookSchema, TextFilterSchema, RangeFilterSchema
 
 
 def get_books(db: Session,
+              limit: int,
+              offset: int,
               text_filter: Optional[TextFilterSchema] = None,
               range_filter: Optional[RangeFilterSchema] = None) -> list[Type[Book]]:
     """
     Get the list of information about all the books that satisfy the filter conditions (if any)
     Args:
+        limit: number of items per page
+        offset: results will start from this index (index start from 0)
         db: database session object
         text_filter: filter object for string comparisons for string columns
         range_filter: filter object for applying numeric range operations for integer columns
@@ -38,7 +42,7 @@ def get_books(db: Session,
 
     if hasattr(range_filter, "field") and range_filter.field == "publication_year":
         query = query.filter(Book.publication_year.between(range_filter.lower_bound, range_filter.upper_bound))
-    return query.all()
+    return query.limit(limit).offset(offset).all()
 
 
 def get_book_by_id(db: Session, book_id: int) -> Optional[Book]:
