@@ -19,7 +19,7 @@ def get_reviews(db: Session) -> list[Type[Review]]:
     return db.query(Review).all()
 
 
-def add_review(db: Session, review: ReviewSchema) -> Optional[Review]:
+def add_review(db: Session, review: ReviewSchema) -> Review:
     """
     Adds a review into the system
     Args:
