@@ -3,7 +3,8 @@
 import enum
 
 
-class ApplicationCodes(enum.Enum):
+@enum.unique
+class ApplicationCodes(enum.IntEnum):
     """
     Custom codes used in application
     """
