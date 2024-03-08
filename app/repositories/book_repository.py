@@ -19,6 +19,8 @@ def get_books(db: Session,
     """
     Get the list of information about all the books that satisfy the filter conditions (if any)
     Args:
+        limit: number of items per page
+        offset: results will start from this index (index start from 0)
         db: database session object
         text_filter: filter object for string comparisons for string columns
         range_filter: filter object for applying numeric range operations for integer columns
