@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.repositories import review_repository
-from app.schemas.schemas import ReviewSchema
+from app.schemas.request_schemas import ReviewSchema
 from app.utils.db_utils import get_db_session
 
 router = APIRouter()
