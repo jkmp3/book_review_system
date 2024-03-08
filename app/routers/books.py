@@ -13,7 +13,7 @@ router = APIRouter()
 
 
 @router.post("/books")
-async def add_book(book: BookSchema,
+def add_book(book: BookSchema,
                    db: Session = Depends(get_db_session)):
     """
 
@@ -33,7 +33,7 @@ async def add_book(book: BookSchema,
 
 
 @router.post("/get_books")
-async def get_books(filter_schema: Optional[FilterSchema] = None,
+def get_books(filter_schema: Optional[FilterSchema] = None,
                     db: Session = Depends(get_db_session)):
     if filter_schema is None:
         return {"books": book_repository.get_books(db)}
@@ -45,7 +45,7 @@ async def get_books(filter_schema: Optional[FilterSchema] = None,
 
 
 @router.get("/books/{book_id}")
-async def get_book_by_id(book_id: int, db: Session = Depends(get_db_session)) -> dict[str, Any]:
+def get_book_by_id(book_id: int, db: Session = Depends(get_db_session)) -> dict[str, Any]:
     """
     Returns the info on book with the given id
     Args:
