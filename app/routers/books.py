@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from app.enums.error_codes import ErrorCodes
 from app.repositories import book_repository
 from app.schemas.request_schemas import BookSchema, FilterSchema
-from app.schemas.response_schemas import BadRequestResponse, OkayResponse
+from app.schemas.response_schemas import BadRequestResponse, OkayResponse, PaginatedResponse
 from app.utils.db_utils import get_db_session
 
 router = APIRouter()
@@ -46,17 +46,18 @@ def get_books(limit: int = 10,
         db: database session object
 
     Returns:
-        list of books
+        paginated list of books
     """
     if filter_schema is None:
-        return {"books": book_repository.get_books(db, limit, offset)}
+        books = book_repository.get_books(db, limit, offset)
+        return PaginatedResponse(code=200, limit=limit, offset=offset, result=books).dict()
 
     books = book_repository.get_books(db,
                                       limit,
                                       offset,
                                       filter_schema.text_filter,
                                       filter_schema.range_filter)
-    return {"books": books}
+    return PaginatedResponse(code=200, limit=limit, offset=offset, result=books).dict()
 
 
 @router.get("/books/{book_id}")

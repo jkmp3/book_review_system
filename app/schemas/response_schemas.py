@@ -24,6 +24,18 @@ class OkayResponse(Response):
     result: object
 
 
+class PaginatedResponse(OkayResponse):
+    """
+    Represents a regular response object
+
+    code (int): error code
+    result (object): result of the API call
+    """
+
+    limit: int
+    offset: int
+
+
 class BadRequestResponse(Response):
     """
     Represents an error response, returned during unexpected scenarios
