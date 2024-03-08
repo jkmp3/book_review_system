@@ -14,7 +14,7 @@ router = APIRouter()
 
 @router.post("/books")
 def add_book(book: BookSchema,
-                   db: Session = Depends(get_db_session)):
+             db: Session = Depends(get_db_session)):
     """
 
     Args:
@@ -34,7 +34,7 @@ def add_book(book: BookSchema,
 
 @router.post("/get_books")
 def get_books(filter_schema: Optional[FilterSchema] = None,
-                    db: Session = Depends(get_db_session)):
+              db: Session = Depends(get_db_session)):
     if filter_schema is None:
         return {"books": book_repository.get_books(db)}
 
