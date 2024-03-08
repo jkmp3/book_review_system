@@ -1,8 +1,8 @@
 """Contains database configuration settings for the application"""
 
 import sqlalchemy
-from sqlalchemy.ext import declarative
 from sqlalchemy import orm
+from sqlalchemy.ext import declarative
 
 PATH_TO_DB_FILE = ".\\app\\resources\\data.db"
 

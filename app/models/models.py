@@ -1,6 +1,5 @@
 """Contains ORM equivalent classes to the tables stored in database"""
 
-
 from sqlalchemy import Column, Integer, String, Float, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
