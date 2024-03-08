@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from app.enums.error_codes import ErrorCodes
 from app.repositories import book_repository
 from app.schemas.request_schemas import BookSchema, FilterSchema
-from app.schemas.response_schemas import ErrorResponse
+from app.schemas.response_schemas import BadRequestResponse, OkayResponse
 from app.utils.db_utils import get_db_session
 
 router = APIRouter()
@@ -25,11 +25,11 @@ async def add_book(book: BookSchema,
         returns the saved object, if duplicate throws error
     """
     try:
-        book_repository.add_book(db, book)
+        book = book_repository.add_book(db, book)
     except ValueError:
-        return ErrorResponse(code=ErrorCodes.BOOK_ALREADY_EXISTS.error_id,
-                             message=ErrorCodes.BOOK_ALREADY_EXISTS.message).dict()
-    return {"message": "Book added successfully."}
+        return BadRequestResponse(code=ErrorCodes.BOOK_ALREADY_EXISTS.error_id,
+                                  message=ErrorCodes.BOOK_ALREADY_EXISTS.message).dict()
+    return OkayResponse(code=200, result=book).dict()
 
 
 @router.post("/get_books")
@@ -57,6 +57,6 @@ async def get_book_by_id(book_id: int, db: Session = Depends(get_db_session)) ->
     """
     book = book_repository.get_book_by_id(db, book_id)
     if book is None:
-        return ErrorResponse(code=ErrorCodes.BOOK_DOES_NOT_EXIST.error_id,
-                             message=ErrorCodes.BOOK_DOES_NOT_EXIST.message).dict()
+        return BadRequestResponse(code=ErrorCodes.BOOK_DOES_NOT_EXIST.error_id,
+                                  message=ErrorCodes.BOOK_DOES_NOT_EXIST.message).dict()
     return book

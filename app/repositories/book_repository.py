@@ -68,7 +68,7 @@ def add_book(db: Session, book: BookSchema) -> Book:
         Book.title == book.title,
         Book.author_name == book.author_name,
         Book.publication_year == book.publication_year,
-    ))
+    )).first()
     if _book is not None:
         raise ValueError(ErrorCodes.BOOK_ALREADY_EXISTS.message)
 
