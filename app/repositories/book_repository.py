@@ -12,6 +12,8 @@ from app.schemas.request_schemas import BookSchema, TextFilterSchema, RangeFilte
 
 
 def get_books(db: Session,
+              limit: int,
+              offset: int,
               text_filter: Optional[TextFilterSchema] = None,
               range_filter: Optional[RangeFilterSchema] = None) -> list[Type[Book]]:
     """
@@ -38,7 +40,7 @@ def get_books(db: Session,
 
     if hasattr(range_filter, "field") and range_filter.field == "publication_year":
         query = query.filter(Book.publication_year.between(range_filter.lower_bound, range_filter.upper_bound))
-    return query.all()
+    return query.limit(limit).offset(offset).all()
 
 
 def get_book_by_id(db: Session, book_id: int) -> Optional[Book]:

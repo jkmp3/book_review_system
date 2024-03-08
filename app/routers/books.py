@@ -33,12 +33,27 @@ def add_book(book: BookSchema,
 
 
 @router.post("/get_books")
-def get_books(filter_schema: Optional[FilterSchema] = None,
+def get_books(limit: int = 10,
+              offset: int = 0,
+              filter_schema: Optional[FilterSchema] = None,
               db: Session = Depends(get_db_session)):
+    """
+    Returns the list of books
+    Args:
+        limit: number of items per page
+        offset: results will start from this index (index start from 0)
+        filter_schema: can contain text and range filter operations
+        db: database session object
+
+    Returns:
+        list of books
+    """
     if filter_schema is None:
-        return {"books": book_repository.get_books(db)}
+        return {"books": book_repository.get_books(db, limit, offset)}
 
     books = book_repository.get_books(db,
+                                      limit,
+                                      offset,
                                       filter_schema.text_filter,
                                       filter_schema.range_filter)
     return {"books": books}
