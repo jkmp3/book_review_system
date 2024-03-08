@@ -3,7 +3,7 @@ from typing import Optional, Any
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from app.enums.error_codes import ErrorCodes
+from app.enums.codes import ErrorCodes, ApplicationCodes
 from app.repositories import book_repository
 from app.schemas.request_schemas import BookSchema, FilterSchema
 from app.schemas.response_schemas import BadRequestResponse, OkayResponse, PaginatedResponse
@@ -29,7 +29,7 @@ def add_book(book: BookSchema,
     except ValueError:
         return BadRequestResponse(code=ErrorCodes.BOOK_ALREADY_EXISTS.error_id,
                                   message=ErrorCodes.BOOK_ALREADY_EXISTS.message).dict()
-    return OkayResponse(code=200, result=book).dict()
+    return OkayResponse(code=ApplicationCodes.OKAY, result=book).dict()
 
 
 @router.post("/get_books")
@@ -50,14 +50,14 @@ def get_books(limit: int = 10,
     """
     if filter_schema is None:
         books = book_repository.get_books(db, limit, offset)
-        return PaginatedResponse(code=200, limit=limit, offset=offset, result=books).dict()
+        return PaginatedResponse(code=ApplicationCodes.OKAY, limit=limit, offset=offset, result=books).dict()
 
     books = book_repository.get_books(db,
                                       limit,
                                       offset,
                                       filter_schema.text_filter,
                                       filter_schema.range_filter)
-    return PaginatedResponse(code=200, limit=limit, offset=offset, result=books).dict()
+    return PaginatedResponse(code=ApplicationCodes.OKAY, limit=limit, offset=offset, result=books).dict()
 
 
 @router.get("/books/{book_id}")

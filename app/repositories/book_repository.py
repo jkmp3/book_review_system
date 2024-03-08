@@ -5,7 +5,7 @@ from typing import Optional, Type
 from sqlalchemy import and_
 from sqlalchemy.orm import Session
 
-from app.enums.error_codes import ErrorCodes
+from app.enums.codes import ErrorCodes
 from app.enums.string_comparison import StringComparison
 from app.models.models import Book
 from app.schemas.request_schemas import BookSchema, TextFilterSchema, RangeFilterSchema
